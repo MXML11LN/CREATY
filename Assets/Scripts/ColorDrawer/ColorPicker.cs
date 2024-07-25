@@ -9,8 +9,8 @@ using static UnityEngine.Mathf;
 [ExecuteInEditMode, RequireComponent(typeof(Image))]
 public class ColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    private const float recip2Pi = 0.159154943f;
-    private const string colorPickerShaderName = "UI/ColorPicker";
+    private const float Recip2Pi = 0.159154943f;
+    private const string ColorPickerShaderName = "UI/ColorPicker";
 
     private static readonly int _HSV             = Shader.PropertyToID(nameof(_HSV));
     private static readonly int _AspectRatio     = Shader.PropertyToID(nameof(_AspectRatio));
@@ -21,10 +21,10 @@ public class ColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
     private Material generatedMaterial;
 
     private enum PointerDownLocation { HueCircle, SVSquare, Outside }
-    private PointerDownLocation pointerDownLocation = PointerDownLocation.Outside;
+    private PointerDownLocation _pointerDownLocation = PointerDownLocation.Outside;
 
-    private RectTransform rectTransform;
-    private Image image;
+    private RectTransform _rectTransform;
+    private Image _image;
 
     float h, s, v;
 
@@ -41,14 +41,14 @@ public class ColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 
     private void Awake()
     {
-        rectTransform = transform as RectTransform;
-        image = GetComponent<Image>();
+        _rectTransform = transform as RectTransform;
+        _image = GetComponent<Image>();
 
         h = s = v = 0;
 
         if (WrongShader())
         {
-            Debug.LogWarning($"Color picker requires image material with {colorPickerShaderName} shader.");
+            Debug.LogWarning($"Color picker requires image material with {ColorPickerShaderName} shader.");
 
             if (Application.isPlaying && colorPickerShader != null)
             {
@@ -56,7 +56,7 @@ public class ColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
                 generatedMaterial.hideFlags = HideFlags.HideAndDontSave;
             }
 
-            image.material = generatedMaterial;
+            _image.material = generatedMaterial;
 
             return;
         }
@@ -71,21 +71,21 @@ public class ColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 
     private void Reset()
     {
-        colorPickerShader = Shader.Find(colorPickerShaderName);
+        colorPickerShader = Shader.Find(ColorPickerShaderName);
     }
 
     private bool WrongShader()
     {
-        return image?.material?.shader?.name != colorPickerShaderName;
+        return _image?.material?.shader?.name != ColorPickerShaderName;
     }
 
     private void Update()
     {
         if (WrongShader()) return;
 
-        var rect = rectTransform.rect;
+        var rect = _rectTransform.rect;
 
-        image.material.SetFloat(_AspectRatio, rect.width / rect.height);
+        _image.material.SetFloat(_AspectRatio, rect.width / rect.height);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -94,15 +94,15 @@ public class ColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 
         var pos = GetRelativePosition(eventData);
 
-        if (pointerDownLocation == PointerDownLocation.HueCircle)
+        if (_pointerDownLocation == PointerDownLocation.HueCircle)
         {
-            h = (Atan2(pos.y, pos.x) * recip2Pi + 1) % 1;
+            h = (Atan2(pos.y, pos.x) * Recip2Pi + 1) % 1;
             ApplyColor();
         }
 
-        if (pointerDownLocation == PointerDownLocation.SVSquare)
+        if (_pointerDownLocation == PointerDownLocation.SVSquare)
         {
-            var size = image.material.GetFloat(_SVSquareSize);
+            var size = _image.material.GetFloat(_SVSquareSize);
 
             s = InverseLerp(-size, size, pos.x);
             v = InverseLerp(-size, size, pos.y);
@@ -118,20 +118,20 @@ public class ColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 
         float r = pos.magnitude;
 
-        if (r < .5f && r > image.material.GetFloat(_HueCircleInner))
+        if (r < .5f && r > _image.material.GetFloat(_HueCircleInner))
         {
-            pointerDownLocation = PointerDownLocation.HueCircle;
-            h = (Atan2(pos.y, pos.x) * recip2Pi + 1) % 1;
+            _pointerDownLocation = PointerDownLocation.HueCircle;
+            h = (Atan2(pos.y, pos.x) * Recip2Pi + 1) % 1;
             ApplyColor();
         }
         else
         {
-            var size = image.material.GetFloat(_SVSquareSize);
+            var size = _image.material.GetFloat(_SVSquareSize);
 
             // s -> x, v -> y
             if (pos.x >= -size && pos.x <= size && pos.y >= -size && pos.y <= size)
             {
-                pointerDownLocation = PointerDownLocation.SVSquare;
+                _pointerDownLocation = PointerDownLocation.SVSquare;
                 s = InverseLerp(-size, size, pos.x);
                 v = InverseLerp(-size, size, pos.y);
                 ApplyColor();
@@ -141,12 +141,12 @@ public class ColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        pointerDownLocation = PointerDownLocation.Outside;
+        _pointerDownLocation = PointerDownLocation.Outside;
     }
 
     private void ApplyColor()
     {
-        image.material.SetVector(_HSV, new Vector3(h, s, v));
+        _image.material.SetVector(_HSV, new Vector3(h, s, v));
 
         OnColorChanged?.Invoke(color);
     }
@@ -166,14 +166,14 @@ public class ColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 
         Vector2 rtPos;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out rtPos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, eventData.position, eventData.pressEventCamera, out rtPos);
 
         return new Vector2(InverseLerpUnclamped(rect.xMin, rect.xMax, rtPos.x), InverseLerpUnclamped(rect.yMin, rect.yMax, rtPos.y)) - Vector2.one * 0.5f;
     }
 
     public Rect GetSquaredRect()
     {
-        var rect = rectTransform.rect;
+        var rect = _rectTransform.rect;
         var smallestDimension = Min(rect.width, rect.height);
         return new Rect(rect.center - Vector2.one * smallestDimension * 0.5f, Vector2.one * smallestDimension);
     }

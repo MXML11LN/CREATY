@@ -148,7 +148,6 @@ GameObject:
   - component: {fileID: 1420899392}
   - component: {fileID: 1420899390}
   - component: {fileID: 1420899389}
-  - component: {fileID: 1420899395}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -231,21 +230,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
---- !u!114 &1420899395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1420899388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ea805a7ea99e4f9dfb199175e9be9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wheelSpeed: 2
-  moveSpeed: 0.3
-  rotateSpeed: 0.1
 --- !u!1001 &1608281420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -254,9 +238,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 535768232, guid: ceaf4acd5f113dd49b8851dc93fa0fa4, type: 3}
+      propertyPath: painter
+      value: 
+      objectReference: {fileID: 358812261}
+    - target: {fileID: 535768232, guid: ceaf4acd5f113dd49b8851dc93fa0fa4, type: 3}
       propertyPath: samplePainter
       value: 
       objectReference: {fileID: 358812261}
+    - target: {fileID: 535768232, guid: ceaf4acd5f113dd49b8851dc93fa0fa4, type: 3}
+      propertyPath: saveJpegQuality
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5123904333548962318, guid: ceaf4acd5f113dd49b8851dc93fa0fa4,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -342,6 +334,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 5123904335497318171, guid: ceaf4acd5f113dd49b8851dc93fa0fa4,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5123904335497318171, guid: ceaf4acd5f113dd49b8851dc93fa0fa4,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 200
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ceaf4acd5f113dd49b8851dc93fa0fa4, type: 3}
 --- !u!1 &1643212148
@@ -373,7 +375,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -568,6 +570,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3497551713315481994, guid: e80e43824f7cc5d4288b2aae6470c2e1,
+        type: 3}
+      propertyPath: brush.brushColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3497551713315481994, guid: e80e43824f7cc5d4288b2aae6470c2e1,
+        type: 3}
+      propertyPath: brush.brushColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3497551713315481994, guid: e80e43824f7cc5d4288b2aae6470c2e1,
+        type: 3}
+      propertyPath: brush.brushColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3497551713315481994, guid: e80e43824f7cc5d4288b2aae6470c2e1,
+        type: 3}
+      propertyPath: brush.brushTexture
+      value: 
+      objectReference: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 3497551713315481995, guid: e80e43824f7cc5d4288b2aae6470c2e1,
         type: 3}
       propertyPath: m_Name

@@ -5,13 +5,12 @@ using UnityEngine;
 
 namespace ColorDrawer
 {
-    public static class TextureStatics
+    public static class TextureUtils
     {
         private const string DirectoryPath = "Assets/Resources/Save/";
         public static Texture2D ConvertRenderTextureToTexture2D(RenderTexture renderTexture,TextureFormat textureFormat)
         {
             Texture2D texture = new Texture2D(renderTexture.width, renderTexture.height, textureFormat, false);
-
             RenderTexture currentRT = RenderTexture.active;
             RenderTexture.active = renderTexture;
             texture.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);

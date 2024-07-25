@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ColorDrawer
 {
-    public class SamplePainter : MonoBehaviour
+    public class Painter : MonoBehaviour
     {
         [SerializeField] private Brush brush;
 
